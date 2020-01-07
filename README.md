@@ -1,5 +1,5 @@
 # OF-Simple-Synth
-A simple polyphonic synthesizer that you can play with your computer keyboard
+A simple polyphonic synthesizer that you can play with your computer keyboard.
 
 This is ideal for testing when working with audio in openFrameworks.  You can add it to your project by simply including
 the header file, instantiating the synth in ofApp.h and then adding the following methods to your OF app:
