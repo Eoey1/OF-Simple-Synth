@@ -19,10 +19,6 @@ protected:
     float sum = 0.0f;
     std::array<maxiOsc, 18> oscillators;
     
-    // C++ guidelines say that an abstract class typically doesn't
-    // have any data for a constructor to initialize...
-    
-    // C.126: An abstract class typically doesn’t need a constructor
     Waveform(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
     : frequencies{frequencies}, triggers{triggers}, envelopes{envelopes} {}
     
