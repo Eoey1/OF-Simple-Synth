@@ -8,6 +8,6 @@ Add synth.update() to the update() function, synth.output() to the audioOut() fu
 keyPressed(int key) function and synth.keyReleased(key) to the keyReleased(int key) function.
 
 You can extend the length of the keyboard by pressing 'Enter' and change octave with the arrow keys.  Use number keys 1-4
-to toggle different various waveforms.
+to toggle different waveforms.
 
 
