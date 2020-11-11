@@ -3,44 +3,44 @@
 //--------------------------------------------------------------
 float Sines::output()
 {
-    for (int i = 0; i < envelopes.size(); i++) {
-        sum += envelopes[i].adsr(oscillators[i].sinewave(frequencies[i]), triggers[i]);
+    for (int i = 0; i < envelopes->size(); i++) {
+        sum += (*envelopes)[i].adsr(oscillators[i].sinewave((*frequencies)[i]), (*triggers)[i]);
     }
 
-    sum /= envelopes.size();
+    sum /= envelopes->size();
     return sum;
 }
 
 //--------------------------------------------------------------
 float Saws::output()
 {
-    for (int i = 0; i < envelopes.size(); i++) {
-        sum += envelopes[i].adsr(oscillators[i].saw(frequencies[i]), triggers[i]);
+    for (int i = 0; i < envelopes->size(); i++) {
+        sum += (*envelopes)[i].adsr(oscillators[i].saw((*frequencies)[i]), (*triggers)[i]);
     }
     
-    sum /= envelopes.size();
+    sum /= envelopes->size();
     return sum;
 }
 
 //--------------------------------------------------------------
 float Squares::output()
 {
-    for (int i = 0; i < envelopes.size(); i++) {
-        sum += envelopes[i].adsr(oscillators[i].square(frequencies[i]), triggers[i]);
+    for (int i = 0; i < envelopes->size(); i++) {
+        sum += (*envelopes)[i].adsr(oscillators[i].square((*frequencies)[i]), (*triggers)[i]);
     }
     
-    sum /= envelopes.size();
+    sum /= envelopes->size();
     return sum;
 }
 
 //--------------------------------------------------------------
 float Triangles::output()
 {
-    for (int i = 0; i < envelopes.size(); i++) {
-        sum += envelopes[i].adsr(oscillators[i].triangle(frequencies[i]), triggers[i]);
+    for (int i = 0; i < envelopes->size(); i++) {
+        sum += (*envelopes)[i].adsr(oscillators[i].sinewave( (*frequencies)[i]), (*triggers)[i]);
     }
     
-    sum /= envelopes.size();
+    sum /= envelopes->size();
     return sum;
 }
 
@@ -53,10 +53,54 @@ Synth::Synth()
         triggers.push_back(0);
     }
     
-    waveform[0] = make_unique<Sines>(frequencies, triggers, envelopes);
-    waveform[1] = make_unique<Saws>(frequencies, triggers, envelopes);
-    waveform[2] = make_unique<Squares>(frequencies, triggers, envelopes);
-    waveform[3] = make_unique<Triangles>(frequencies, triggers, envelopes);
+    for (int i = 0; i < letters.size(); ++i)
+        dictionary[letters[i]] = 0;
+    
+    /*
+     
+     vector<int> keys;
+     for (std::map<int, char>::iterator it = triggers.begin(); it != triggers.end(); ++it) {
+         // keys.push_back(it->first);
+         keys.push_back((*it).first);
+     }
+     
+    */
+    
+    /*
+    
+    // I think this breaks because keys only exists in this constructor function
+    vector<const int*> keys;
+    for (auto& element : triggers) {
+        const int* ptr = &element.first;
+        keys.push_back(ptr);
+    }
+     
+    */
+    
+    /*
+    
+    vector<int*> keys;
+    for (int i = 0; i < triggers.size(); ++i)
+        keys[i] = &triggers[i];
+     
+    */
+    
+    // Alternatively if the key already exists
+    int& value = dictionary['a'];
+    int* key = &value;
+    
+    vector<int> keys;
+    for (int i = 0; i < letters.size(); i++) {
+        int& value = dictionary[letters[i]];
+        keys.push_back(value);
+    }
+    
+    // vector<int>* keys = &triggers;
+    
+    waveform[0] = make_unique<Sines>(&frequencies, &keys, &envelopes);
+    waveform[1] = make_unique<Saws>(&frequencies, &keys, &envelopes);
+    waveform[2] = make_unique<Squares>(&frequencies, &keys, &envelopes);
+    waveform[3] = make_unique<Triangles>(&frequencies, &keys, &envelopes);
 }
 
 //--------------------------------------------------------------
@@ -103,6 +147,8 @@ float Synth::output()
 //--------------------------------------------------------------
 void Synth::keyPressed(int key)
 {
+    dictionary[key] = 1;
+    
     for (auto& elem : letters) {
         // if the current index is needed:
         auto i = &elem - &letters[0];
@@ -131,6 +177,8 @@ void Synth::keyPressed(int key)
         preset4 = !preset4;
         cout << "triangles" << endl;
     }
+    
+    /*
     
     if (key == OF_KEY_RETURN) {
         useExtended = !useExtended;
@@ -164,6 +212,8 @@ void Synth::keyPressed(int key)
             letters.erase(letters.begin() + 13, letters.begin() + 18);
         }
     }
+     
+    */
     
     if (key == OF_KEY_UP || key == OF_KEY_DOWN) {
         changeOctave(key);      
@@ -173,6 +223,8 @@ void Synth::keyPressed(int key)
 //--------------------------------------------------------------
 void Synth::keyReleased(int key)
 {
+    dictionary[key] = 0;
+    
     for (auto& elem : letters) {
         auto i = &elem - &letters[0];
         

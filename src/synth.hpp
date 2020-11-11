@@ -12,14 +12,14 @@ class Waveform
 {
 protected:
     // Using references to avoid dealing with raw pointers!
-    std::vector<float>& frequencies;
-    std::vector<int>& triggers;
-    std::vector<maxiEnv>& envelopes;
+    std::vector<float>* frequencies;
+    std::vector<int>* triggers;
+    std::vector<maxiEnv>* envelopes;
     
     float sum = 0.0f;
     std::array<maxiOsc, 18> oscillators;
     
-    Waveform(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
+    Waveform(std::vector<float>* frequencies, std::vector<int>* triggers, std::vector<maxiEnv>* envelopes)
     : frequencies{frequencies}, triggers{triggers}, envelopes{envelopes} {}
     
 public:
@@ -33,7 +33,7 @@ public:
 class Sines : public Waveform
 {
 public:
-    Sines(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
+    Sines(std::vector<float>* frequencies, std::vector<int>* triggers, std::vector<maxiEnv>* envelopes)
     : Waveform(frequencies, triggers, envelopes) {}
     
     float output() override;
@@ -43,7 +43,7 @@ public:
 class Saws : public Waveform
 {
 public:
-    Saws(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
+    Saws(std::vector<float>* frequencies, std::vector<int>* triggers, std::vector<maxiEnv>* envelopes)
     : Waveform (frequencies, triggers, envelopes) {}
     
     float output() override;
@@ -53,7 +53,7 @@ public:
 class Squares : public Waveform
 {
 public:
-    Squares(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
+    Squares(std::vector<float>* frequencies, std::vector<int>* triggers, std::vector<maxiEnv>* envelopes)
     : Waveform(frequencies, triggers, envelopes) {}
     
     float output() override;
@@ -63,7 +63,7 @@ public:
 class Triangles : public Waveform
 {
 public:
-    Triangles(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
+    Triangles(std::vector<float>* frequencies, std::vector<int>* triggers, std::vector<maxiEnv>* envelopes)
     : Waveform(frequencies, triggers, envelopes) {}
     
     float output() override;
@@ -96,6 +96,8 @@ private:
     
     convert converter;
     std::vector<char> letters = {'a', 'w', 's', 'e', 'd', 'f', 't', 'g', 'y', 'h', 'u', 'j', 'k'};
+    
+    std::map<char, int> dictionary;
     
     void changeOctave(int key);
     int octave = 1;
