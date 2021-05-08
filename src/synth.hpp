@@ -10,6 +10,15 @@
 //--------------------------------------------------------------
 class Waveform
 {
+public:
+    Waveform(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
+    : frequencies{frequencies}, triggers{triggers}, envelopes{envelopes} {}
+    
+    // C++ guidelines say that "A class with a virtual function
+    // should have a virtual or protected destructor"
+    virtual ~Waveform() {}
+    virtual float output() = 0;
+    
 protected:
     // Using references to avoid dealing with raw pointers!
     std::vector<float>& frequencies;
@@ -18,24 +27,13 @@ protected:
     
     float sum = 0.0f;
     std::array<maxiOsc, 18> oscillators;
-    
-    Waveform(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
-    : frequencies{frequencies}, triggers{triggers}, envelopes{envelopes} {}
-    
-public:
-    // C++ guidelines say that "A class with a virtual function
-    // should have a virtual or protected destructor"
-    virtual ~Waveform() {}
-    virtual float output() = 0;
 };
 
 //--------------------------------------------------------------
 class Sines : public Waveform
 {
 public:
-    Sines(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
-    : Waveform(frequencies, triggers, envelopes) {}
-    
+    using Waveform::Waveform;
     float output() override;
 };
 
@@ -43,9 +41,7 @@ public:
 class Saws : public Waveform
 {
 public:
-    Saws(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
-    : Waveform (frequencies, triggers, envelopes) {}
-    
+    using Waveform::Waveform;
     float output() override;
 };
 
@@ -53,9 +49,7 @@ public:
 class Squares : public Waveform
 {
 public:
-    Squares(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
-    : Waveform(frequencies, triggers, envelopes) {}
-    
+    using Waveform::Waveform;
     float output() override;
 };
 
@@ -63,9 +57,7 @@ public:
 class Triangles : public Waveform
 {
 public:
-    Triangles(std::vector<float>& frequencies, std::vector<int>& triggers, std::vector<maxiEnv>& envelopes)
-    : Waveform(frequencies, triggers, envelopes) {}
-    
+    using Waveform::Waveform;
     float output() override;
 };
 
