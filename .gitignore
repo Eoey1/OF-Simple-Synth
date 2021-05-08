@@ -36,4 +36,12 @@ DerivedData/
 ### Xcode Patch ###
 **/xcshareddata/WorkspaceSettings.xcsettings
 
+### Unnecessary OF stuff 
+.DS_Store
+bin/myKeyboardDebug.app/Contents/Frameworks/
+bin/myKeyboardDebug.app/Contents/Info.plist
+bin/myKeyboardDebug.app/Contents/MacOS/
+bin/myKeyboardDebug.app/Contents/_CodeSignature/
+myKeyboard.xcodeproj/project.pbxproj
+
 # End of https://www.gitignore.io/api/xcode
